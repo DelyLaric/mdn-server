@@ -10,7 +10,7 @@ class BaseModel extends Model
 {
     public $timestamps = false;
 
-    protected $primaryKey = '_id';
+    protected $guarded = ['id'];
 
     public function setArray($key, $value)
     {
