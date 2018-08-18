@@ -212,7 +212,8 @@ return [
 
         // Customs
         'DB' => App\Facades\DB::class,
-        'JWT' => App\Facades\JWT::class
+        'JWT' => App\Facades\JWT::class,
+        'Transaction' => App\Services\Transaction::class
 
     ],
 
