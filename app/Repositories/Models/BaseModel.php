@@ -39,6 +39,8 @@ class BaseModel extends Model
                 return (bool) $value;
             case 'object':
                 return $this->fromJson($value, true);
+            case 'array':
+                return array_decode($value);
             case 'array|integer':
                 return array_decode($value);
             case 'array|string':
