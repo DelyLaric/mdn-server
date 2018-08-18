@@ -20,13 +20,17 @@ class Controller extends BaseController
             throw new \Illuminate\Validation\ValidationException($validator);
         }
 
+        $result = [];
+
         foreach ($rules as $key => $value) {
-            if (!isset($this->params[$key])) {
-                $this->params[$key] = null;
+            if (isset($this->params[$key])) {
+                $result[$key] = $this->params[$key];
+            } else {
+                $result[$key] = null;
             }
         }
 
-        return $this->params;
+        return $result;
     }
 
     public function via(array $rules)
