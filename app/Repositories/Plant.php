@@ -10,7 +10,7 @@ class Plant extends BaseRepository
   {
     $id = DB::table('plants')->insertGetId(['code' => $code]);
 
-    return $this->find($id);
+    return $this->findById($id);
   }
 
   public function delete($code)
@@ -30,7 +30,12 @@ class Plant extends BaseRepository
     return DB::table('plants')->orderBy('id')->get();
   }
 
-  public function find($id)
+  public function find($code)
+  {
+    return DB::table('plants')->where('code', $code)->get()[0];
+  }
+
+  public function findById($id)
   {
     return DB::table('plants')->where('id', $id)->get()[0];
   }
