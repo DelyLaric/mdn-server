@@ -20,6 +20,12 @@ class Controller extends BaseController
             throw new \Illuminate\Validation\ValidationException($validator);
         }
 
+        foreach ($rules as $key => $value) {
+            if (!isset($this->params[$key])) {
+                $this->params[$key] = null;
+            }
+        }
+
         return $this->params;
     }
 
