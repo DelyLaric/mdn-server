@@ -10,7 +10,7 @@ class Plant extends BaseRepository
   {
     $id = DB::table('plants')->insertGetId(['name' => $name]);
 
-    return $this->findById($id);
+    return $this->search(['id' => $id])[0];
   }
 
   public function delete($name)
@@ -25,18 +25,18 @@ class Plant extends BaseRepository
     DB::table('plants')->where('name', $name)->update($data);
   }
 
-  public function search()
+  public function search($params = [])
   {
-    return DB::table('plants')->orderBy('id')->get();
-  }
+    $query = DB::table('plants')->orderBy('id');
 
-  public function find($name)
-  {
-    return DB::table('plants')->where('name', $name)->get()[0];
-  }
+    if (isset($params['id'])) {
+      $query->where('id', $params['id']);
+    }
 
-  public function findById($id)
-  {
-    return DB::table('plants')->where('id', $id)->get()[0];
+    if (isset($params['name'])) {
+      $query->where('name', $params['name']);
+    }
+
+    return $query->get();
   }
 } 
