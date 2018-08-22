@@ -6,18 +6,19 @@ use DB;
 
 class Plant extends BaseRepository
 {
-  public function create($name)
+  public function create($name, $comment)
   {
-    $id = DB::table('plants')->insertGetId(['name' => $name]);
+    $id = DB::table('plants')->insertGetId([
+      'name' => $name,
+      'comment' => $comment
+    ]);
 
     return $this->search(['id' => $id])[0];
   }
 
   public function delete($name)
   {
-    DB::table('plants')->where('name', $name)->update([
-      'deleted_at' => 'now()'
-    ]);
+    DB::table('plants')->where('name', $name)->delete();
   }
 
   public function update($name, $data)

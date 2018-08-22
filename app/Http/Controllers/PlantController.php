@@ -9,14 +9,16 @@ class PlantController extends Controller
   public function create()
   {
     $params = $this->via([
-      'name' => 'required|unique:plants,name'
+      'name' => 'required|unique:plants,name',
+      'comment' => 'nullable'
     ]);
 
     $name = $params['name'];
+    $comment = $params['comment'];
 
     return success_response([
       'message' => '工厂已创建',
-      'data' => Plant::create($name)
+      'data' => Plant::create($name, $comment)
     ]);
   }
 
@@ -38,6 +40,17 @@ class PlantController extends Controller
     Plant::update($oldName, ['name' => $name]);
 
     return success_response('工厂代码已更新');
+  }
+
+  public function updateComment($plant)
+  {
+    $comment = $this->via([
+      'comment' => 'required'
+    ])['comment'];
+
+    Plant::update($plant, ['comment' => $comment]);
+
+    return success_response('工厂备注已更新');
   }
 
   public function search()
