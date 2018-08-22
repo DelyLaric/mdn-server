@@ -10,8 +10,9 @@ class Plants extends Migration
     {
         Schema::create('plants', function ($table) {
             $table->increments('id');
-            // $table->string('code')->unique();
+
             $table->string('name')->unique();
+            $table->string('comment')->nullable();
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
