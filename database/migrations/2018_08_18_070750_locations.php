@@ -11,7 +11,6 @@ class Locations extends Migration
         Schema::create('locations', function ($table) {
             $table->increments('id');
             $table->integer('area_id');
-            $table->integer('location_id');
         });
     }
 
