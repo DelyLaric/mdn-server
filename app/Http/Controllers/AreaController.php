@@ -6,46 +6,17 @@ use App\Repositories\Facades\Area;
 
 class AreaController extends Controller
 {
-  public function createColumn()
+  public function create()
   {
     $params = $this->via([
-      'name' => 'required|unique:area_columns,name',
-      'text' => 'required',
-      'comment' => 'nullable'
-    ]);
-
-    return success_response([
-      'message' => '流程字段已创建',
-      'data' => Area::createColumn(
-        $params['name'], $params['text'], $params['comment']
-      )
-    ]);
-  }
-
-  public function deleteColumn($column)
-  {
-    Area::deleteColumn($column);
-
-    return success_response('流程字段已删除');
-  }
-
-  public function getColumns()
-  {
-    return Area::getColumns();
-  }
-
-  public function createArea($plant)
-  {
-    $params = $this->via([
+      'plantId' => 'required',
       'name' => 'required',
       'text' => 'required',
       'comment' => 'nullable',
       'columns' => 'array'
     ]);
 
-    $params = array_merge(['plant' => $plant], $params);
-
-    $result = call_user_func_array([Area::class, 'createArea'], $params);
+    $result = call_user_func_array([Area::class, 'create'], $params);
 
     return success_response([
       'message' => '流程区域已创建',
@@ -53,26 +24,59 @@ class AreaController extends Controller
     ]);
   }
 
-  public function deleteArea($plant, $area)
+  public function delete($id)
   {
-    Area::deleteArea($plant, $area);
+    Area::delete($id);
 
     return success_response('流程区域已删除');
+  }
+
+  public function updateName($id)
+  {
+    $name = $this->via([
+      'name' => 'required'
+    ])['name'];
+
+    Area::updateName($id, $name);
+
+    return success_response('流程区域信息已修改');
+  }
+
+  public function updateText($id)
+  {
+    $text = $this->via([
+      'text' => 'required'
+    ])['text'];
+
+    Area::updateText($id, $text);
+
+    return success_response('流程区域信息已修改');
+  }
+
+  public function updateComment($id)
+  {
+    $comment = $this->via([
+      'comment' => 'required'
+    ])['comment'];
+
+    Area::updateComment($id, $comment);
+
+    return success_response('流程区域信息已修改');
+  }
+
+  public function updateColumns($id)
+  {
+    $columns = $this->via([
+      'columns' => 'required'
+    ])['columns'];
+
+    Area::updateColumns($id, $columns);
+
+    return success_response('流程区域信息已修改');
   }
 
   public function getAreas()
   {
     return Area::getAreas();
-  }
-
-  public function updateAreaColumns($plant, $area)
-  {
-    $columns = $this->via([
-       'columns' => 'required|array'
-    ])['columns'];
-
-    Area::updateAreaColumns($plant, $area, $columns);
-
-    return success_response('流程区域字段已修改');
   }
 }

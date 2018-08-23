@@ -1,15 +1,28 @@
 <?php
 
+Route::post('validate', 'ValidationController@validation');
+
 Route::get('plants', 'PlantController@search');
 Route::post('plants', 'PlantController@create');
-Route::delete('plants', 'PlantController@delete');
-Route::put('plants/{name}/name', 'PlantController@updateName');
+Route::delete('plants/{plant}', 'PlantController@delete');
+Route::put('plants/{plant}/name', 'PlantController@updateName');
+Route::put('plants/{plant}/comment', 'PlantController@updateComment');
 
-Route::get('areas/columns', 'AreaController@getColumns');
-Route::post('areas/columns', 'AreaController@createColumn');
-Route::delete('areas/columns/{column}', 'AreaController@deleteColumn');
+Route::get('areas/columns', 'ColumnController@search');
+Route::post('areas/columns', 'ColumnController@create');
+Route::delete('areas/columns/{column}', 'ColumnController@delete');
+Route::put('areas/columns/{column}/name', 'ColumnController@updateName');
+Route::put('areas/columns/{column}/text', 'ColumnController@updateText');
+Route::put('areas/columns/{column}/comment', 'ColumnController@updateComment');
 
-Route::get('plants/{plant}/areas', 'AreaController@getAreas');
+Route::get('areas', 'AreaController@getAreas');
+Route::post('areas', 'AreaController@create');
+Route::delete('areas/{id}', 'AreaController@delete');
+Route::put('areas/{id}/name', 'AreaController@updateName');
+Route::put('areas/{id}/text', 'AreaController@updateText');
+Route::put('areas/{id}/comment', 'AreaController@updateComment');
+Route::put('areas/{id}/columns', 'AreaController@updateColumns');
+
 Route::post('plants/{plant}/areas', 'AreaController@createArea');
 Route::delete('plants/{plant}/areas/{area}', 'AreaController@deleteArea');
 
