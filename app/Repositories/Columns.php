@@ -13,7 +13,7 @@ class Columns extends BaseRepository
     Transaction::begin();
 
     Schema::table('locations', function ($table) use ($name) {
-      $table->string($name);
+      $table->string($name)->nullable();
     });
 
     $id = DB::table('area_columns')->insertGetId([
