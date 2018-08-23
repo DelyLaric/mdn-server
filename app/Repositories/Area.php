@@ -18,7 +18,7 @@ class Area extends BaseRepository
       'column_ids' => array_encode($columns)
     ]);
 
-    return $this->getAreas(['id' => $id])[0];
+    return $this->search(['id' => $id])[0];
   }
 
   public function delete($id)
@@ -48,7 +48,7 @@ class Area extends BaseRepository
     ]);
   }
 
-  public function getAreas($params = [])
+  public function search($params = [])
   {
     $query = DB::table('areas')->orderBy('id');
 

@@ -75,8 +75,8 @@ class AreaController extends Controller
     return success_response('流程区域信息已修改');
   }
 
-  public function getAreas()
+  public function search()
   {
-    return Area::getAreas();
+    return Area::search();
   }
 }

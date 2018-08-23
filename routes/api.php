@@ -15,7 +15,7 @@ Route::put('areas/columns/{column}/name', 'ColumnController@updateName');
 Route::put('areas/columns/{column}/text', 'ColumnController@updateText');
 Route::put('areas/columns/{column}/comment', 'ColumnController@updateComment');
 
-Route::get('areas', 'AreaController@getAreas');
+Route::get('areas', 'AreaController@search');
 Route::post('areas', 'AreaController@create');
 Route::delete('areas/{id}', 'AreaController@delete');
 Route::put('areas/{id}/name', 'AreaController@updateName');
