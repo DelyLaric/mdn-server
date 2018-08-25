@@ -23,6 +23,10 @@ Route::put('areas/{id}/text', 'AreaController@updateText');
 Route::put('areas/{id}/comment', 'AreaController@updateComment');
 Route::put('areas/{id}/columns', 'AreaController@updateColumns');
 
+Route::post('locations/search', 'LocationController@search');
+Route::post('locations/update', 'LocationController@update');
+Route::post('locations/delete', 'LocationController@delete');
+
 Route::post('plants/{plant}/areas', 'AreaController@createArea');
 Route::delete('plants/{plant}/areas/{area}', 'AreaController@deleteArea');
 

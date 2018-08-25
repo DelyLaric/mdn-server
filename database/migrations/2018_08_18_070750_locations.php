@@ -11,6 +11,8 @@ class Locations extends Migration
         Schema::create('locations', function ($table) {
             $table->increments('id');
             $table->integer('area_id');
+            $table->string('location_id')->comment('位置代码');
+            $table->unique(['area_id', 'location_id']);
         });
     }
 

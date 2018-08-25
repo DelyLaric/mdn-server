@@ -73,7 +73,7 @@ class Columns extends BaseRepository
 
   public function search($params = [])
   {
-    $query = DB::table('area_columns')->orderBy('id');
+    $query = DB::table('area_columns')->orderBy('area_columns.id');
 
     if (isset($params['id'])) {
       $query->where('id', $params['id']);
@@ -81,6 +81,12 @@ class Columns extends BaseRepository
 
     if (isset($params['name'])) {
       $query->where('name', $params['name']);
+    }
+
+    if (isset($params['area_id'])) {
+      $columns = Facades\Area::search(['id' => $params['area_id']])[0]->column_ids;
+
+      $query->whereIn('id', $columns);
     }
 
     return $query->get();
