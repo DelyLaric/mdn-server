@@ -2,6 +2,7 @@
 
 use App\Repositories\Facades;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class LocationSeeder extends Seeder
 {
@@ -14,9 +15,12 @@ class LocationSeeder extends Seeder
                 $columns = Facades\Columns::search(
                     ['area_id' => $area->id]
                 )->pluck('name')->toArray();
-                $values = array_map(function ($column) { return '测试数据' . random_int(0, 1000); }, $columns);
-                $data = array_combine($columns, $values);
-                Facades\Locations::create($area->id, $i + 1, $data);
+                foreach ($columns as $column) {
+                    $data[$column] = '测试数据' . random_int(0, 10000);
+                }
+                $data['area_id'] = $area->id;
+                $data['location_id'] = random_int(0, 100000);
+                DB::table('locations')->insert($data);
             }
         }
     }

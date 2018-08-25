@@ -8,14 +8,16 @@ use Illuminate\Support\Facades\Schema;
 
 class Locations extends BaseRepository
 {
-  public function create($areaId, $locationId, $data)
+  public function create($areaId)
   {
-    $data['area_id'] = $areaId;
-    $data['location_id'] = $locationId;
+    $id = DB::table('locations')->insertGetId([
+      'area_id' => $areaId
+    ]);
 
-    $id = DB::table('locations')->insertGetId($data);
-
-    return $id;
+    return (array) $this->search([
+      'id' => $id,
+      'area_id' => $areaId
+    ])[0];
   }
 
   public function delete($ids)
@@ -41,21 +43,28 @@ class Locations extends BaseRepository
     }
   }
 
-  public function search($params)
+  public function search($params = [])
   {
-    $query = DB::table('locations')->orderBy('id', 'desc');
-    $query->where('area_id', $params['areaId']);
+    $columns = Facades\Columns::search(['area_id' => $params['area_id']]);
+    $selects = $columns->map(
+      function ($column) { return $column->name; }
+    )->toArray();
 
-    $columns = Facades\Columns::search(['area_id' => $params['areaId']]);
-    $selects = $columns->map(function ($column) {
-      return $column->name;
-    })->toArray();
+    $query = DB::table('locations')->orderBy('id', 'desc');
     $query->select(array_merge(['id', 'area_id', 'location_id'], $selects));
 
-    if (!isset($params['format'])) $params['format'] = 'paginate';
+    $query->where('area_id', $params['area_id']);
+
+    if (isset($params['id'])) {
+      $query->where('id', $params['id']);
+    }
+
+    if (!isset($params['format'])) $params['format'] = 'object';
     switch ($params['format']) {
       case 'array':
         return Serialize\Locations::getArray($query->get());
+      case 'object':
+        return $query->get();
       case 'paginate':
         return Serialize\Pagination::getResource($query->paginate(50));
     }
