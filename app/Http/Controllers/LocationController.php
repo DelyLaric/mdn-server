@@ -19,7 +19,8 @@ class LocationController extends Controller
   {
     $params = $this->via([
       'areaId' => 'required|exists:areas,id',
-      'format' => 'required'
+      'format' => 'required',
+      'query' => 'nullable'
     ]);
 
     // 待商榷的 areaId 参数

@@ -46,17 +46,28 @@ class Locations extends BaseRepository
   public function search($params = [])
   {
     $columns = Facades\Columns::search(['area_id' => $params['area_id']]);
-    $selects = $columns->map(
-      function ($column) { return $column->name; }
-    )->toArray();
+    $selects = ['location_id'];
+
+    foreach ($columns as $column) {
+      $selects[] = $column->name;
+    }
 
     $query = DB::table('locations')->orderBy('id', 'desc');
-    $query->select(array_merge(['id', 'area_id', 'location_id'], $selects));
+    $query->select(array_merge(['id', 'area_id'], $selects));
 
     $query->where('area_id', $params['area_id']);
 
     if (isset($params['id'])) {
       $query->where('id', $params['id']);
+    }
+
+    if (isset($params['query'])) {
+      $param = $params['query'];
+      $query->where(function ($query) use ($selects, $param) {
+        foreach ($selects as $select) {
+          $query->orWhere($select, 'like', "%$param%");
+        }
+      });
     }
 
     if (!isset($params['format'])) $params['format'] = 'object';
