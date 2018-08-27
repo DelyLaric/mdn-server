@@ -11,7 +11,7 @@ class AreaSeeder extends Seeder
         $columns = Facades\Columns::search();
 
         foreach ($plantIds as $plantId) {
-            for ($i = 0; $i < random_int(3, 10); $i++) {
+            for ($i = 0; $i < random_int(5, 10); $i++) {
                 Facades\Area::create(
                     $plantId,
                     "test_area_$i",

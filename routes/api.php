@@ -1,6 +1,7 @@
 <?php
 
-Route::post('validate', 'ValidationController@validation');
+Route::post('common/upload', 'CommonController@upload');
+Route::post('common/validate', 'ValidationController@validation');
 
 Route::get('plants', 'PlantController@search');
 Route::post('plants', 'PlantController@create');

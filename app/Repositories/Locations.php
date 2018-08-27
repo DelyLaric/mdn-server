@@ -20,6 +20,11 @@ class Locations extends BaseRepository
     ])[0];
   }
 
+  public function upload($areaId, $header, $unique, $data, $conflict)
+  {
+    Facades\Common::upload("locations");
+  }
+
   public function delete($ids)
   {
     DB::table('locations')->whereIn('id', $ids)->delete();
