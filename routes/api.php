@@ -28,8 +28,3 @@ Route::post('locations/search', 'LocationController@search');
 Route::post('locations/update', 'LocationController@update');
 Route::post('locations/delete', 'LocationController@delete');
 Route::post('locations/create', 'LocationController@create');
-
-Route::post('plants/{plant}/areas', 'AreaController@createArea');
-Route::delete('plants/{plant}/areas/{area}', 'AreaController@deleteArea');
-
-Route::put('plants/{plant}/areas/{area}/columns', 'AreaController@updateAreaColumns');
