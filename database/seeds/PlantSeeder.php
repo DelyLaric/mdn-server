@@ -7,7 +7,7 @@ class PlantSeeder extends Seeder
 {
     public function run()
     {
-        foreach ([1, 2, 3, 4, 5] as $key) {
+        foreach ([1, 2, 3, 4, 5, 6, 7] as $key) {
             Facades\Plant::create("test_plant_$key", "测试工厂_$key");
         }
     }

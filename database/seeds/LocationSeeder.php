@@ -15,7 +15,7 @@ class LocationSeeder extends Seeder
             $columns = Facades\Columns::search(
                 ['area_id' => $area->id]
             )->pluck('name')->toArray();
-            for ($i = 0, $l = random_int(500, 1000); $i < $l; $i++) {
+            for ($i = 0, $l = random_int(1, 20) * 100; $i < $l; $i++) {
                 $item = [];
                 $item['area_id'] = $area->id;
                 foreach ($columns as $column) {
@@ -24,7 +24,11 @@ class LocationSeeder extends Seeder
                 $item['location_id'] = $i;
                 $data[] = $item;
             }
-            DB::table('locations')->insert($data);
+
+            $groups = array_chunk($data, 500);
+            foreach ($groups as $group) {
+                DB::table('locations')->insert($group);
+            }
         }
     }
 }
