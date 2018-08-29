@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use DB;
 use Transaction;
-use Illuminate\Support\Facades\Schema;
 
 class Locations extends BaseRepository
 {

@@ -28,3 +28,12 @@ Route::post('locations/search', 'LocationController@search');
 Route::post('locations/update', 'LocationController@update');
 Route::post('locations/delete', 'LocationController@delete');
 Route::post('locations/create', 'LocationController@create');
+
+Route::post('projects/create', 'ProjectController@create');
+Route::post('projects/search', 'ProjectController@search');
+Route::post('projects/file', 'ProjectController@file');
+Route::post('projects/reopen', 'ProjectController@reopen');
+Route::post('projects/destroy', 'ProjectController@destroy');
+Route::post('projects/update/name', 'ProjectController@updateName');
+Route::post('projects/update/text', 'ProjectController@updateText');
+Route::post('projects/update/comment', 'ProjectController@updateComment');
