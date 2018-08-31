@@ -37,3 +37,8 @@ Route::post('projects/destroy', 'ProjectController@destroy');
 Route::post('projects/update/name', 'ProjectController@updateName');
 Route::post('projects/update/text', 'ProjectController@updateText');
 Route::post('projects/update/comment', 'ProjectController@updateComment');
+
+Route::post('tasks/search', 'TaskController@search');
+Route::post('tasks/create', 'TaskController@create');
+Route::post('tasks/destroy', 'TaskController@destroy');
+Route::post('tasks/comment/update', 'TaskController@updateComment');

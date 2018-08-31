@@ -11,5 +11,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AreaSeeder::class);
         $this->call(LocationSeeder::class);
         $this->call(ProjectSeeder::class);
+        $this->call(TaskSeeder::class);
     }
 }
