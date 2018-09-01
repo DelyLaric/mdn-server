@@ -24,7 +24,6 @@ class Projects extends BaseRepository
   public function search($params = [])
   {
     $query = DB::table('projects')
-               ->orderBy('filed_at', 'desc null first')
                ->orderBy('id', 'desc');
 
     if (isset($params['is_filed'])) {
