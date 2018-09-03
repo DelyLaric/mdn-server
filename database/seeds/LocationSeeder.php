@@ -8,8 +8,8 @@ class LocationSeeder extends Seeder
 {
     public function run()
     {
-        $areas = Facades\Area::search();
-        
+        $areas = Facades\Areas::search();
+
         foreach ($areas as $area) {
             $data = [];
             $columns = Facades\Columns::search(

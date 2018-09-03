@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Facades\Area;
+use DB;
+use App\Repositories\Facades\Areas;
 
 class AreaController extends Controller
 {
+  public function search()
+  {
+    return Areas::search();
+  }
+
   public function create()
   {
     $params = $this->via([
@@ -16,67 +22,77 @@ class AreaController extends Controller
       'columns' => 'array'
     ]);
 
-    $result = call_user_func_array([Area::class, 'create'], $params);
+    $params['plant_id'] = $params['plantId'];
+    $params['column_ids'] = array_encode($params['columns']);
+    unset($params['plantId']);
+    unset($params['columns']);
+
+    $id = DB::table('areas')->insertGetId($params);
 
     return success_response([
       'message' => '流程区域已创建',
-      'data' => $result
+      'data' => Areas::search(['id' => $id])[0]
     ]);
   }
 
-  public function delete($id)
+  public function destroy()
   {
-    Area::delete($id);
+    $params = $this->via([
+      'id' => 'required'
+    ]);
+
+    DB::table('areas')->where('id', $params['id'])->delete();
 
     return success_response('流程区域已删除');
   }
 
-  public function updateName($id)
+  public function updateName()
   {
-    $name = $this->via([
+    $params = $this->via([
+      'id' => 'required',
       'name' => 'required'
-    ])['name'];
+    ]);
 
-    Area::updateName($id, $name);
+    DB::table('areas')->where('id', $params['id'])->update(['name' => $params['name']]);
 
     return success_response('流程区域信息已修改');
   }
 
-  public function updateText($id)
+  public function updateText()
   {
-    $text = $this->via([
+    $params = $this->via([
+      'id' => 'required',
       'text' => 'required'
-    ])['text'];
+    ]);
 
-    Area::updateText($id, $text);
+    DB::table('areas')->where('id', $params['id'])->update(['text' => $params['text']]);
 
     return success_response('流程区域信息已修改');
   }
 
-  public function updateComment($id)
+  public function updateComment()
   {
-    $comment = $this->via([
+    $params = $this->via([
+      'id' => 'required',
       'comment' => 'required'
-    ])['comment'];
+    ]);
 
-    Area::updateComment($id, $comment);
+    DB::table('areas')->where('id', $params['id'])->update(['comment' => $params['comment']]);
 
     return success_response('流程区域信息已修改');
   }
 
-  public function updateColumns($id)
+  public function updateColumns()
   {
-    $columns = $this->via([
+    $params = $this->via([
+      'id' => 'required',
       'columns' => 'required'
-    ])['columns'];
+    ]);
 
-    Area::updateColumns($id, $columns);
+    DB::table('areas')->where('id', $params['id'])->update([
+      'column_ids' => array_encode($params['columns'])
+    ]);
 
     return success_response('流程区域信息已修改');
-  }
-
-  public function search()
-  {
-    return Area::search();
   }
 }

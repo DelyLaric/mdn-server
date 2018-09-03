@@ -7,7 +7,7 @@ class ProjectSeeder extends Seeder
 {
     public function run()
     {
-        $plantIds = Facades\Plant::search()->pluck('id');
+        $plantIds = Facades\Plants::search()->pluck('id');
         foreach ($plantIds as $plantId) {
             $data = [];
             for ($i = 0; $i < random_int(300, 500); $i++) {

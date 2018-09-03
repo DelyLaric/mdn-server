@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Facades\Plant;
+use DB;
+use App\Repositories\Facades\Plants;
 
 class PlantController extends Controller
 {
+  public function search()
+  {
+    return Plants::search();
+  }
+
   public function create()
   {
     $params = $this->via([
@@ -13,48 +19,50 @@ class PlantController extends Controller
       'comment' => 'nullable'
     ]);
 
-    $name = $params['name'];
-    $comment = $params['comment'];
+    $id = DB::table('plants')->insertGetId($params);
 
     return success_response([
       'message' => '工厂已创建',
-      'data' => Plant::create($name, $comment)
+      'data' => Plants::search(['id' => $id])[0]
     ]);
   }
 
-  public function delete($name)
+  public function destroy()
   {
-    Plant::delete($name);
+    $params = $this->via([
+      'id' => 'required'
+    ]);
+
+    DB::table('plants')->where('id', $params['id'])->delete();
 
     return success_response('工厂已删除');
   }
 
-  public function updateName($oldName)
+  public function updateName()
   {
     $params = $this->via([
-      'name' => 'required|unique:plants,name'
+      'id' => 'required',
+      'name' => 'required'
     ]);
 
-    $name = $params['name'];
+    DB::table('plants')->where('id', $params['id'])->update([
+      'name' => $params['name']
+    ]);
 
-    Plant::update($oldName, ['name' => $name]);
-
-    return success_response('工厂代码已更新');
+    return success_response('工厂名已更新');
   }
 
-  public function updateComment($plant)
+  public function updateComment()
   {
-    $comment = $this->via([
+    $params = $this->via([
+      'id' => 'required',
       'comment' => 'required'
-    ])['comment'];
+    ]);
 
-    Plant::update($plant, ['comment' => $comment]);
+    DB::table('plants')->where('id', $params['id'])->update([
+      'comment' => $params['comment']
+    ]);
 
     return success_response('工厂备注已更新');
-  }
-
-  public function search()
-  {
-    return Plant::search();
   }
 }

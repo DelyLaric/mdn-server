@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Facades;
 
-class Area extends BaseFacade
+class Areas extends BaseFacade
 {
 
 }

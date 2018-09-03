@@ -7,45 +7,9 @@ use Transaction;
 
 class Locations extends BaseRepository
 {
-  public function create($areaId)
-  {
-    $id = DB::table('locations')->insertGetId([
-      'area_id' => $areaId
-    ]);
-
-    return (array) $this->search([
-      'id' => $id,
-      'area_id' => $areaId
-    ])[0];
-  }
-
-  public function upload($areaId, $header, $unique, $data, $conflict)
-  {
-    Facades\Common::upload("locations");
-  }
-
-  public function delete($ids)
-  {
-    DB::table('locations')->whereIn('id', $ids)->delete();
-  }
-
-  public function update($items)
-  {
-    if (!is_array($items)) {
-      $items = [$items];
-    }
-
-    foreach ($items as $item) {
-      $params = [];
-      foreach ($item['fields'] as $field) {
-        $params[$field['name']] = $field['value'];
-      }
-
-      DB::table('locations')->where(
-        'id', $item['id']
-      )->update($params);
-    }
-  }
+  /**
+   * @param number $params['area_id'] required
+   */
 
   public function search($params = [])
   {
@@ -83,5 +47,10 @@ class Locations extends BaseRepository
       case 'paginate':
         return Serialize\Pagination::getResource($query->paginate(50));
     }
+  }
+
+  public function upload($areaId, $header, $unique, $data, $conflict)
+  {
+    Facades\Common::upload("locations");
   }
 }

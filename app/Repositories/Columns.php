@@ -8,6 +8,27 @@ use Illuminate\Support\Facades\Schema;
 
 class Columns extends BaseRepository
 {
+  public function search($params = [])
+  {
+    $query = DB::table('area_columns')->orderBy('area_columns.id');
+
+    if (isset($params['id'])) {
+      $query->where('id', $params['id']);
+    }
+
+    if (isset($params['name'])) {
+      $query->where('name', $params['name']);
+    }
+
+    if (isset($params['area_id'])) {
+      $columns = Facades\Areas::search(['id' => $params['area_id']])[0]->column_ids;
+
+      $query->whereIn('id', $columns);
+    }
+
+    return $query->get();
+  }
+
   public function create($name, $text, $comment)
   {
     Transaction::begin();
@@ -27,68 +48,36 @@ class Columns extends BaseRepository
     return $this->search(['id' => $id])[0];
   }
 
-  public function delete($name)
+  public function destroy($id)
   {
+    $name = $this->search(['id' => $id])[0]->name;
+
     Transaction::begin();
 
     Schema::table('locations', function ($table) use ($name) {
       $table->dropColumn($name);
     });
 
-    $id = $this->search(['name' => $name])[0]->id;
     DB::table('areas')->update(['column_ids' => DB::raw("array_remove(column_ids, $id)")]);
-    DB::table('area_columns')->where('name', $name)->delete();
+    DB::table('area_columns')->where('id', $id)->delete();
 
     Transaction::commit();
   }
 
-  public function updateName($column, $name)
+  public function updateName($id, $name)
   {
+    $oldName = $this->search(['id' => $id])[0]->name;
+
     Transaction::begin();
 
-    Schema::table('locations', function ($table) use ($column, $name) {
-      $table->renameColumn($column, $name);
+    Schema::table('locations', function ($table) use ($oldName, $name) {
+      $table->renameColumn($oldName, $name);
     });
 
-    DB::table('area_columns')->where('name', $column)->update([
+    DB::table('area_columns')->where('id', $id)->update([
       'name' => $name
     ]);
 
     Transaction::commit();
-  }
-
-  public function updateText($column, $text)
-  {
-    DB::table('area_columns')->where('name', $column)->update([
-      'text' => $text
-    ]);
-  }
-
-  public function updateComment($column, $comment)
-  {
-    DB::table('area_columns')->where('name', $column)->update([
-      'comment' => $comment
-    ]);
-  }
-
-  public function search($params = [])
-  {
-    $query = DB::table('area_columns')->orderBy('area_columns.id');
-
-    if (isset($params['id'])) {
-      $query->where('id', $params['id']);
-    }
-
-    if (isset($params['name'])) {
-      $query->where('name', $params['name']);
-    }
-
-    if (isset($params['area_id'])) {
-      $columns = Facades\Area::search(['id' => $params['area_id']])[0]->column_ids;
-
-      $query->whereIn('id', $columns);
-    }
-
-    return $query->get();
   }
 }

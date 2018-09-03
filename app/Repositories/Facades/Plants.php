@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Facades;
 
-class Plant extends BaseFacade
+class Plants extends BaseFacade
 {
 
 }

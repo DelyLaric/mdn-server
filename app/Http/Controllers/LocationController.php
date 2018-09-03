@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Repositories\Facades\Locations;
 
 class LocationController extends Controller
@@ -12,7 +13,15 @@ class LocationController extends Controller
       'areaId' => 'required'
     ])['areaId'];
 
-    return Locations::create($areaId);
+    $id = DB::table('locations')->insertGetId([
+      'area_id' => $areaId
+    ]);
+
+    // area_id 用于确定 location 所拥有的 columns
+    return (array) Locations::search([
+      'id' => $id,
+      'area_id' => $areaId
+    ])[0];
   }
 
   public function search()
@@ -31,22 +40,31 @@ class LocationController extends Controller
 
   public function update()
   {
-    $params = $this->via([
-      'data' => 'required|array'
-    ])['data'];
+    $items = $this->via([
+      'items' => 'required|array'
+    ])['items'];
 
-    Locations::update($params);
+    foreach ($items as $item) {
+      $params = [];
+      foreach ($item['fields'] as $field) {
+        $params[$field['name']] = $field['value'];
+      }
+
+      DB::table('locations')->where(
+        'id', $item['id']
+      )->update($params);
+    }
 
     return success_response('区域数据已更新');
   }
 
-  public function delete()
+  public function destroy()
   {
     $ids = $this->via([
       'ids' => 'array|required'
     ])['ids'];
 
-    Locations::delete($ids);
+    DB::table('locations')->whereIn('id', $ids)->delete();
 
     return success_response('区域数据已删除');
   }

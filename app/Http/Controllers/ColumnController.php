@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Repositories\Facades\Columns;
 
 class ColumnController extends Controller
 {
+  public function search()
+  {
+    return columns::search();
+  }
+
   public function create()
   {
     $params = $this->via([
@@ -22,48 +28,54 @@ class ColumnController extends Controller
     ]);
   }
 
-  public function delete($column)
+  public function destroy()
   {
-    Columns::delete($column);
+    $params = $this->via([
+      'id' => 'required'
+    ]);
+
+    Columns::destroy($params['id']);
 
     return success_response('流程字段已删除');
   }
 
-  public function updateName($column)
+  public function updateName()
   {
-    $name = $this->via([
-      'name' => 'required|unique:area_columns,name'
-    ])['name'];
+    $params = $this->via([
+      'id' => 'required',
+      'name' => 'required'
+    ]);
 
-    Columns::updateName($column, $name);
+    Columns::updateName($params['id'], $params['name']);
 
     return success_response('流程属性字段已修改');
   }
 
-  public function updateText($column)
+  public function updateText()
   {
-    $text = $this->via([
-      'text' => 'required|unique:area_columns,name'
-    ])['text'];
+    $params = $this->via([
+      'id' => 'required',
+      'text' => 'required'
+    ]);
 
-    Columns::updateText($column, $text);
+    DB::table('area_columns')->where('id', $params['id'])->update([
+      'text' => $params['text']
+    ]);
 
     return success_response('流程属性显示名已修改');
   }
 
-  public function updateComment($column)
+  public function updateComment()
   {
-    $comment = $this->via([
-      'comment' => 'required|unique:area_columns,name'
-    ])['comment'];
+    $params = $this->via([
+      'id' => 'required',
+      'comment' => 'required'
+    ]);
 
-    Columns::updateComment($column, $comment);
+    DB::table('area_columns')->where('id', $params['id'])->update([
+      'comment' => $params['comment']
+    ]);
 
     return success_response('流程属性备注已修改');
-  }
-
-  public function search()
-  {
-    return columns::search();
   }
 }
