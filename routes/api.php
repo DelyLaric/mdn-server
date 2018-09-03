@@ -3,21 +3,6 @@
 Route::post('common/upload', 'CommonController@upload');
 Route::post('common/validate', 'ValidationController@validation');
 
-Route::get('areas/columns', 'ColumnController@search');
-Route::post('areas/columns', 'ColumnController@create');
-Route::delete('areas/columns/{column}', 'ColumnController@delete');
-Route::put('areas/columns/{column}/name', 'ColumnController@updateName');
-Route::put('areas/columns/{column}/text', 'ColumnController@updateText');
-Route::put('areas/columns/{column}/comment', 'ColumnController@updateComment');
-
-// Route::get('areas', 'AreaController@search');
-// Route::post('areas', 'AreaController@create');
-// Route::delete('areas/{id}', 'AreaController@delete');
-// Route::put('areas/{id}/name', 'AreaController@updateName');
-// Route::put('areas/{id}/text', 'AreaController@updateText');
-// Route::put('areas/{id}/comment', 'AreaController@updateComment');
-// Route::put('areas/{id}/columns', 'AreaController@updateColumns');
-
 Route::post('plants/search', 'PlantController@search');
 Route::post('plants/create', 'PlantController@create');
 Route::post('plants/destroy', 'PlantController@destroy');
@@ -49,11 +34,12 @@ Route::post('projects/search', 'ProjectController@search');
 Route::post('projects/file', 'ProjectController@file');
 Route::post('projects/reopen', 'ProjectController@reopen');
 Route::post('projects/destroy', 'ProjectController@destroy');
-Route::post('projects/update/name', 'ProjectController@updateName');
-Route::post('projects/update/text', 'ProjectController@updateText');
-Route::post('projects/update/comment', 'ProjectController@updateComment');
+Route::post('projects/name/update', 'ProjectController@updateName');
+Route::post('projects/text/update', 'ProjectController@updateText');
+Route::post('projects/comment/update', 'ProjectController@updateComment');
 
 Route::post('tasks/search', 'TaskController@search');
 Route::post('tasks/create', 'TaskController@create');
 Route::post('tasks/destroy', 'TaskController@destroy');
+Route::post('tasks/status/update', 'TaskController@updateStatus');
 Route::post('tasks/comment/update', 'TaskController@updateComment');

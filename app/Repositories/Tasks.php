@@ -10,7 +10,6 @@ class Tasks extends BaseRepository
   public function search($params = [])
   {
     $query = DB::table('tasks')
-               ->orderBy('status', 'asc')
                ->orderBy('id', 'desc');
     if (isset($params['id'])) {
       $query->where('id', $params['id']);

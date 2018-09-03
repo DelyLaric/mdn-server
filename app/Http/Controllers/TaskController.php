@@ -46,13 +46,27 @@ class TaskController extends Controller
   {
     $params = $this->via([
       'id' => 'required',
-      'value' => 'required'
+      'comment' => 'required'
     ]);
 
     DB::table('tasks')->where('id', $params['id'])->update([
-      'comment' => $params['value']
+      'comment' => $params['comment']
     ]);
 
-    return 200;
+    return 'ok';
+  }
+
+  public function updateStatus()
+  {
+    $params = $this->via([
+      'id' => 'required',
+      'status' => 'required'
+    ]);
+
+    DB::table('tasks')->where('id', $params['id'])->update([
+      'status' => $params['status']
+    ]);
+
+    return 'ok';
   }
 }
