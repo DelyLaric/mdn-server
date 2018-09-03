@@ -12,7 +12,7 @@ class TaskSeeder extends Seeder
         foreach ($projects as $project) {
             $id = $project->id;
             $data = [];
-            for ($i = 0; $i < random_int(100, 200); $i++) {
+            for ($i = 0; $i < random_int(50, 100); $i++) {
                 $data[] = [
                     'project_id' => $id,
                     'comment' => "测试任务_" . random_int(1, 200000)
