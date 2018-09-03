@@ -74,7 +74,7 @@ class TaskController extends Controller
   {
     $params = $this->via([
       'id' => 'required',
-      'duetime' => 'required'
+      'duetime' => 'nullable'
     ]);
 
     DB::table('tasks')->where('id', $params['id'])->update([
