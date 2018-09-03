@@ -69,4 +69,18 @@ class TaskController extends Controller
 
     return 'ok';
   }
+
+  public function updateDuetime()
+  {
+    $params = $this->via([
+      'id' => 'required',
+      'duetime' => 'required'
+    ]);
+
+    DB::table('tasks')->where('id', $params['id'])->update([
+      'duetime' => $params['duetime']
+    ]);
+
+    return 'ok';
+  }
 }
