@@ -18,7 +18,7 @@ class Tasks extends Migration
             $table->string('line_id')->nullable();
 
             $table->integer('status')->default(0);
-            $table->integer('due_time')->nullable();
+            $table->date('duetime')->nullable();
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('filed_at')->nullable();
