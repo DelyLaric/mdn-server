@@ -44,3 +44,5 @@ Route::post('tasks/destroy', 'TaskController@destroy');
 Route::post('tasks/status/update', 'TaskController@updateStatus');
 Route::post('tasks/comment/update', 'TaskController@updateComment');
 Route::post('tasks/duetime/update', 'TaskController@updateDuetime');
+Route::post('tasks/areas/add', 'TaskAreaController@add');
+Route::post('tasks/areas/remove', 'TaskAreaController@remove');
