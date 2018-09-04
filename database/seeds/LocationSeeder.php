@@ -15,7 +15,7 @@ class LocationSeeder extends Seeder
             $columns = Facades\Columns::search(
                 ['area_id' => $area->id]
             )->pluck('name')->toArray();
-            for ($i = 0, $l = random_int(1, 20) * 10; $i < $l; $i++) {
+            for ($i = 0, $l = random_int(4, 6) * 10; $i < $l; $i++) {
                 $item = [];
                 $item['area_id'] = $area->id;
                 foreach ($columns as $column) {
