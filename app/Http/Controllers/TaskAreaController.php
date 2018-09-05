@@ -36,4 +36,23 @@ class TaskAreaController extends Controller
 
     return 'ok';
   }
+
+  public function updateLocation()
+  {
+    $params = $this->via([
+      'taskId' => 'required',
+      'areaId' => 'required',
+      'locationId' => 'nullable'
+    ]);
+
+    DB::table('task_areas')
+      ->where('task_id', $params['taskId'])
+      ->where('area_id', $params['areaId'])
+      ->update(['location_id' => $params['locationId']]);
+
+    return (array) DB::table('locations')->where([
+      'area_id' => $params['areaId'],
+      'location_id' => $params['locationId']
+    ])->get()->first();
+  }
 }
