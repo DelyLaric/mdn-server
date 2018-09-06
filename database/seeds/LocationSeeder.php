@@ -13,7 +13,7 @@ class LocationSeeder extends Seeder
 
         foreach ($areas as $area) {
             $data = [];
-            $areaColumns = $columns->whereIn('id', $area->column_ids)->pluck('name');
+            $areaColumns = $columns->whereIn('id', $area->columns)->pluck('name');
             for ($i = 0, $l = random_int(4, 6) * 10; $i < $l; $i++) {
                 $item = [];
                 $item['area_id'] = $area->id;
