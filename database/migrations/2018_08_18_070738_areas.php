@@ -19,7 +19,7 @@ class Areas extends Migration
             $table->unique(['plant_id', 'name']);
         });
 
-        DB::statement('ALTER TABLE areas ADD COLUMN column_ids integer[] DEFAULT \'{}\'');
+        DB::statement('ALTER TABLE areas ADD COLUMN columns integer[] DEFAULT \'{}\'');
     }
 
     public function down()
