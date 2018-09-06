@@ -20,12 +20,6 @@ class Columns extends BaseRepository
       $query->where('name', $params['name']);
     }
 
-    if (isset($params['area_id'])) {
-      $columns = Facades\Areas::search(['id' => $params['area_id']])[0]->column_ids;
-
-      $query->whereIn('id', $columns);
-    }
-
     return $query->get();
   }
 
