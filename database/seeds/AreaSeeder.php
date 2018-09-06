@@ -18,7 +18,7 @@ class AreaSeeder extends Seeder
                     'name' => "test_area_$i",
                     'text' => "测试区域_$i",
                     'comment' => "用于测试_$i",
-                    'column_ids' => array_encode(
+                    'columns' => array_encode(
                         $columns->random(random_int(8, 20))->pluck('id')->toArray()
                     )
                 ]);

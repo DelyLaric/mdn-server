@@ -4,12 +4,13 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AreaColumns extends Migration
+class Columns extends Migration
 {
     public function up()
     {
-        Schema::create('area_columns', function ($table) {
+        Schema::create('columns', function ($table) {
             $table->increments('id');
+            $table->string('table')->enum(['parts', 'packages', 'lines', 'locations']);
 
             $table->string('name');
             $table->string('text');
@@ -19,6 +20,6 @@ class AreaColumns extends Migration
 
     public function down()
     {
-        Schema::drop('area_columns');
+        Schema::drop('columns');
     }
 }

@@ -15,15 +15,16 @@ class ColumnController extends Controller
   public function create()
   {
     $params = $this->via([
-      'name' => 'required|unique:area_columns,name',
+      'name' => 'required',
       'text' => 'required',
-      'comment' => 'nullable'
+      'comment' => 'nullable',
+      'table' => 'required'
     ]);
 
     return success_response([
-      'message' => '流程字段已创建',
+      'message' => '属性已创建',
       'data' => Columns::create(
-        $params['name'], $params['text'], $params['comment']
+        $params['name'], $params['text'], $params['comment'], $params['table']
       )
     ]);
   }
@@ -31,10 +32,14 @@ class ColumnController extends Controller
   public function destroy()
   {
     $params = $this->via([
-      'id' => 'required'
+      'id' => 'required',
+      'pivot' => 'required',
+      'pivotKey' => 'nullable'
     ]);
 
-    Columns::destroy($params['id']);
+    if ($params['pivotKey'] === null) $params['pivotKey'] = 'columns'; 
+
+    Columns::destroy($params['id'], $params['pivot'], $params['pivotKey']);
 
     return success_response('流程字段已删除');
   }
@@ -43,10 +48,11 @@ class ColumnController extends Controller
   {
     $params = $this->via([
       'id' => 'required',
-      'name' => 'required'
+      'name' => 'required',
+      'table' => 'required'
     ]);
 
-    Columns::updateName($params['id'], $params['name']);
+    Columns::updateName($params['id'], $params['name'], $params['table']);
 
     return success_response('流程属性字段已修改');
   }
@@ -58,7 +64,7 @@ class ColumnController extends Controller
       'text' => 'required'
     ]);
 
-    DB::table('area_columns')->where('id', $params['id'])->update([
+    DB::table('columns')->where('id', $params['id'])->update([
       'text' => $params['text']
     ]);
 
@@ -72,7 +78,7 @@ class ColumnController extends Controller
       'comment' => 'required'
     ]);
 
-    DB::table('area_columns')->where('id', $params['id'])->update([
+    DB::table('columns')->where('id', $params['id'])->update([
       'comment' => $params['comment']
     ]);
 

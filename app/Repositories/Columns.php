@@ -10,36 +10,31 @@ class Columns extends BaseRepository
 {
   public function search($params = [])
   {
-    $query = DB::table('area_columns')->orderBy('area_columns.id');
+    $query = DB::table('columns')->orderBy('columns.id');
 
     if (isset($params['id'])) {
       $query->where('id', $params['id']);
     }
 
-    if (isset($params['name'])) {
-      $query->where('name', $params['name']);
-    }
-
-    if (isset($params['area_id'])) {
-      $columns = Facades\Areas::search(['id' => $params['area_id']])[0]->column_ids;
-
-      $query->whereIn('id', $columns);
+    if (isset($params['table'])) {
+      $query->where('table', $params['table']);
     }
 
     return $query->get();
   }
 
-  public function create($name, $text, $comment)
+  public function create($name, $text, $comment, $table)
   {
     Transaction::begin();
 
-    Schema::table('locations', function ($table) use ($name) {
+    Schema::table($table, function ($table) use ($name) {
       $table->string($name)->nullable();
     });
 
-    $id = DB::table('area_columns')->insertGetId([
+    $id = DB::table('columns')->insertGetId([
       'name' => $name,
       'text' => $text,
+      'table' => $table,
       'comment' => $comment
     ]);
 
@@ -48,33 +43,35 @@ class Columns extends BaseRepository
     return $this->search(['id' => $id])[0];
   }
 
-  public function destroy($id)
+  public function destroy($id, $pivot, $pivotKey)
   {
-    $name = $this->search(['id' => $id])[0]->name;
+    $column = $this->search(['id' => $id])[0];
+    $table = $column->table;
+    $name = $column->name;
 
     Transaction::begin();
 
-    Schema::table('locations', function ($table) use ($name) {
+    Schema::table($table, function ($table) use ($name) {
       $table->dropColumn($name);
     });
 
-    DB::table('areas')->update(['column_ids' => DB::raw("array_remove(column_ids, $id)")]);
-    DB::table('area_columns')->where('id', $id)->delete();
+    DB::table($pivot)->update([$pivotKey => DB::raw("array_remove($pivotKey, $id)")]);
+    DB::table('columns')->where('id', $id)->delete();
 
     Transaction::commit();
   }
 
-  public function updateName($id, $name)
+  public function updateName($id, $name, $table)
   {
     $oldName = $this->search(['id' => $id])[0]->name;
 
     Transaction::begin();
 
-    Schema::table('locations', function ($table) use ($oldName, $name) {
+    Schema::table($table, function ($table) use ($oldName, $name) {
       $table->renameColumn($oldName, $name);
     });
 
-    DB::table('area_columns')->where('id', $id)->update([
+    DB::table('columns')->where('id', $id)->update([
       'name' => $name
     ]);
 

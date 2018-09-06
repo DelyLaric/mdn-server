@@ -23,7 +23,7 @@ class AreaController extends Controller
     ]);
 
     $params['plant_id'] = $params['plantId'];
-    $params['column_ids'] = array_encode($params['columns']);
+    $params['columns'] = array_encode($params['columns']);
     unset($params['plantId']);
     unset($params['columns']);
 
@@ -90,7 +90,7 @@ class AreaController extends Controller
     ]);
 
     DB::table('areas')->where('id', $params['id'])->update([
-      'column_ids' => array_encode($params['columns'])
+      'columns' => array_encode($params['columns'])
     ]);
 
     return success_response('流程区域信息已修改');

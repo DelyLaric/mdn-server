@@ -7,7 +7,7 @@ class Area
   public static function getResource(&$data)
   {
     foreach ($data as &$datum) {
-      $datum->column_ids = array_decode($datum->column_ids);
+      $datum->columns = array_decode($datum->columns);
     }
 
     return $data;
