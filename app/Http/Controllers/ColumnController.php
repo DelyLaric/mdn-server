@@ -34,10 +34,12 @@ class ColumnController extends Controller
     $params = $this->via([
       'id' => 'required',
       'pivot' => 'required',
-      'column' => 'nullable'
+      'pivotKey' => 'nullable'
     ]);
 
-    Columns::destroy($params['id'], $params['pivot']);
+    if ($params['pivotKey'] === null) $params['pivotKey'] = 'columns'; 
+
+    Columns::destroy($params['id'], $params['pivot'], $params['pivotKey']);
 
     return success_response('流程字段已删除');
   }
