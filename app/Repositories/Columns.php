@@ -61,9 +61,11 @@ class Columns extends BaseRepository
     Transaction::commit();
   }
 
-  public function updateName($id, $name, $table)
+  public function updateName($id, $name)
   {
-    $oldName = $this->search(['id' => $id])[0]->name;
+    $column = $this->search(['id' => $id])[0];
+    $oldName = $column->name;
+    $table = $column->table;
 
     Transaction::begin();
 
