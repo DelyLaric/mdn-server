@@ -13,7 +13,7 @@ class Locations extends BaseRepository
 
   public function search($params = [])
   {
-    $columns = Facades\Columns::search(['area_id' => $params['area_id']]);
+    $columns = Facades\Columns::search(['table' => 'locations']);
     $selects = ['location_id'];
 
     foreach ($columns as $column) {
