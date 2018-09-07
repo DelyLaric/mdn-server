@@ -65,4 +65,16 @@ class PlantController extends Controller
 
     return success_response('工厂备注已更新');
   }
+
+  public function updatePartColumns()
+  {
+    $id = $this->get('id', 'required');
+    $columns = $this->get('columns', 'required');
+
+    DB::table('plants')->where('id', $id)->update([
+      'columns' => array_encode($columns)
+    ]);
+
+    return success_response('工厂零件表已更新');
+  }
 }
