@@ -1,6 +1,5 @@
 <?php
 
-Route::post('common/upload', 'CommonController@upload');
 Route::post('common/validate', 'ValidationController@validation');
 
 Route::post('plants/search', 'PlantController@search');
@@ -8,6 +7,7 @@ Route::post('plants/create', 'PlantController@create');
 Route::post('plants/destroy', 'PlantController@destroy');
 Route::post('plants/name/update', 'PlantController@updateName');
 Route::post('plants/comment/update', 'PlantController@updateComment');
+Route::post('plants/parts/columns/update', 'PlantController@updatePartColumns');
 
 Route::post('columns/search', 'ColumnController@search');
 Route::post('columns/create', 'ColumnController@create');
@@ -16,6 +16,11 @@ Route::post('columns/name/update', 'ColumnController@updateName');
 Route::post('columns/text/update', 'ColumnController@updateText');
 Route::post('columns/comment/update', 'ColumnController@updateComment');
 
+Route::post('data/search', 'DataController@search');
+Route::post('data/upload', 'DataController@upload');
+Route::post('data/create', 'DataController@create');
+Route::post('data/update', 'DataController@update');
+
 Route::post('areas/search', 'AreaController@search');
 Route::post('areas/create', 'AreaController@create');
 Route::post('areas/destroy', 'AreaController@destroy');
@@ -23,11 +28,6 @@ Route::post('areas/name/update', 'AreaController@updateName');
 Route::post('areas/text/update', 'AreaController@updateText');
 Route::post('areas/comment/update', 'AreaController@updateComment');
 Route::post('areas/columns/update', 'AreaController@updateColumns');
-
-Route::post('locations/search', 'LocationController@search');
-Route::post('locations/update', 'LocationController@update');
-Route::post('locations/create', 'LocationController@create');
-Route::post('locations/destroy', 'LocationController@destroy');
 
 Route::post('projects/create', 'ProjectController@create');
 Route::post('projects/search', 'ProjectController@search');

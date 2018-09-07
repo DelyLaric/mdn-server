@@ -48,11 +48,10 @@ class ColumnController extends Controller
   {
     $params = $this->via([
       'id' => 'required',
-      'name' => 'required',
-      'table' => 'required'
+      'name' => 'required'
     ]);
 
-    Columns::updateName($params['id'], $params['name'], $params['table']);
+    Columns::updateName($params['id'], $params['name']);
 
     return success_response('流程属性字段已修改');
   }

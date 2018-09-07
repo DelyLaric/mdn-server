@@ -11,10 +11,10 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function viaParams($rules)
+    public function viaParams($params, $rules)
     {
 
-        $validator = \Validator::make($this->params, $rules);
+        $validator = \Validator::make($params, $rules);
 
         if ($validator->fails()) {
             throw new \Illuminate\Validation\ValidationException($validator);
@@ -23,8 +23,8 @@ class Controller extends BaseController
         $result = [];
 
         foreach ($rules as $key => $value) {
-            if (isset($this->params[$key])) {
-                $result[$key] = $this->params[$key];
+            if (isset($params[$key])) {
+                $result[$key] = $params[$key];
             } else {
                 $result[$key] = null;
             }
@@ -35,8 +35,21 @@ class Controller extends BaseController
 
     public function via(array $rules)
     {
-        $this->params = request(array_keys($rules));
+        $params = request(array_keys($rules));
 
-        return $this->viaParams($rules);
+        return $this->viaParams($params, $rules);
+    }
+
+    public function get($name, $rule, $default = null)
+    {
+        $params = request([$name]);
+
+        $this->viaParams($params, [$name => $rule]);
+        $param = $params[$name];
+        if ($param === null) {
+            $param = $default;
+        }
+
+        return $param;
     }
 }

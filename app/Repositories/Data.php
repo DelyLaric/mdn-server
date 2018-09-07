@@ -6,6 +6,60 @@ use DB;
 
 class Data extends BaseRepository
 {
+  /**
+   *
+   * object like params
+   * @param string table
+   * @param string primary
+   * @param string group
+   * @param string groupId
+   * @param string query
+   *
+   */
+
+  public function search($params = [])
+  {
+    $table = $params['table'];
+    $primary = $params['primary'];
+
+    $columns = Facades\Columns::search(['table' => $table]);
+    $selects = [$primary];
+    foreach ($columns as $column) {
+      $selects[] = $column->name;
+    }
+
+    $query = DB::table($table);
+    $query->orderByRaw("$primary is null desc, id desc");
+    $query->select(array_merge(['id'], $selects));
+
+    if (isset($params['group'])) {
+      $query->where($params['group'], $params['groupId']);
+    }
+
+    if (isset($params['id'])) {
+      $query->where('id', $params['id']);
+    }
+
+    if (isset($params['query'])) {
+      $param = $params['query'];
+      $query->where(function ($query) use ($selects, $param) {
+        foreach ($selects as $select) {
+          $query->orWhere($select, 'like', "%$param%");
+        }
+      });
+    }
+
+    if (!isset($params['format'])) $params['format'] = 'object';
+    switch ($params['format']) {
+      case 'array':
+        return Serialize\Locations::getArray($query->get());
+      case 'object':
+        return $query->get();
+      case 'paginate':
+        return Serialize\Pagination::getResource($query->paginate(50));
+    }
+  }
+
   public function upload($table, $fields, $uniqueField, $values, $conflict)
   {
     // 减少数据了，增强开发体验
