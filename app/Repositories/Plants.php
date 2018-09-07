@@ -19,6 +19,11 @@ class Plants extends BaseRepository
       $query->where('name', $params['name']);
     }
 
-    return $query->get();
+    $datas = $query->get();
+    foreach ($datas as &$data) {
+      $data->part_columns = array_decode($data->part_columns);
+    }
+
+    return $datas;
   }
-} 
+}
