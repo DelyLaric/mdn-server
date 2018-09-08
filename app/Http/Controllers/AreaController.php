@@ -25,7 +25,6 @@ class AreaController extends Controller
     $params['plant_id'] = $params['plantId'];
     $params['columns'] = array_encode($params['columns']);
     unset($params['plantId']);
-    unset($params['columns']);
 
     $id = DB::table('areas')->insertGetId($params);
 
