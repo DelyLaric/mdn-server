@@ -18,8 +18,6 @@ class Plants extends Migration
             $table->timestamp('updated_at')->useCurrent();
             $table->timestamp('deleted_at')->nullable();
         });
-
-        DB::statement('ALTER TABLE plants ADD COLUMN part_columns integer[] DEFAULT \'{}\'');
     }
 
     public function down()
