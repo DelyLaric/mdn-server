@@ -20,6 +20,7 @@ Route::post('data/search', 'DataController@search');
 Route::post('data/upload', 'DataController@upload');
 Route::post('data/create', 'DataController@create');
 Route::post('data/update', 'DataController@update');
+Route::post('data/destroy', 'DataController@destroy');
 
 Route::post('areas/search', 'AreaController@search');
 Route::post('areas/create', 'AreaController@create');

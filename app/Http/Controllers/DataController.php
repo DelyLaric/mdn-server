@@ -78,8 +78,9 @@ class DataController extends Controller
   public function destroy()
   {
     $ids = $this->get('ids', 'required');
+    $table = $this->get('table', 'required');
 
-    DB::table('locations')->whereIn('id', $ids)->delete();
+    DB::table($table)->whereIn('id', $ids)->delete();
 
     return success_response('区域数据已删除');
   }
