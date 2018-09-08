@@ -43,7 +43,7 @@ class Columns extends BaseRepository
     return $this->search(['id' => $id])[0];
   }
 
-  public function destroy($id, $pivot, $pivotKey)
+  public function destroy($id, $pivot = null, $pivotKey = null)
   {
     $column = $this->search(['id' => $id])[0];
     $table = $column->table;
@@ -54,8 +54,9 @@ class Columns extends BaseRepository
     Schema::table($table, function ($table) use ($name) {
       $table->dropColumn($name);
     });
-
-    DB::table($pivot)->update([$pivotKey => DB::raw("array_remove($pivotKey, $id)")]);
+    if ($pivot) {
+      DB::table($pivot)->update([$pivotKey => DB::raw("array_remove($pivotKey, $id)")]);
+    }
     DB::table('columns')->where('id', $id)->delete();
 
     Transaction::commit();

@@ -33,7 +33,7 @@ class ColumnController extends Controller
   {
     $params = $this->via([
       'id' => 'required',
-      'pivot' => 'required',
+      'pivot' => 'nullable',
       'pivotKey' => 'nullable'
     ]);
 
