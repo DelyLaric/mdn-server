@@ -15,6 +15,7 @@ class TaskSeeder extends Seeder
             for ($i = 0; $i < random_int(20, 30); $i++) {
                 $data[] = [
                     'project_id' => $id,
+                    'part_id' => random_int(1, 400),
                     'comment' => "测试任务_" . random_int(1, 200000)
                 ];
             }

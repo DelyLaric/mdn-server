@@ -9,15 +9,13 @@ class TaskController extends Controller
 {
   public function create()
   {
-    $params = $this->via([
-      'projectId' => 'required'
-    ]);
+    $projectId = $this->get('projectId', 'required');
 
     $id = DB::table('tasks')->insertGetId([
-      'project_id' => $params['projectId']
+      'project_id' => $projectId
     ]);
 
-    return (array) Tasks::search(['id' => $id])[0];
+    return (array) Tasks::search(['id' => $id, 'project_id' => $projectId])[0];
   }
 
   public function destroy()
@@ -108,6 +106,20 @@ class TaskController extends Controller
       ->delete();
 
     return 'ok';
+  }
+
+  public function updatePart()
+  {
+    $taskId = $this->get('taskId', 'required');
+    $partId = $this->get('dataId', 'nullable');
+
+    DB::table('tasks')->where('id', $taskId)->update(['part_id' => $partId]);
+    $projectId = Tasks::getPlantIdByTaskId($taskId);
+
+    return (array) DB::table('parts')->where([
+      'data_id' => $partId,
+      'categroy_id' => $projectId
+    ])->get()->first();
   }
 
   public function updateAreaData()
