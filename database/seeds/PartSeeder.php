@@ -22,11 +22,8 @@ class PartSeeder extends Seeder
                 }
                 $item['data_id'] = $i;
                 $data[] = $item;
-                if ($i % 1000 === 0) {
-                    DB::table('parts')->insert($data);
-                    $data = [];
-                }
             }
+            DB::table('parts')->insert($data);
         }
     }
 }
