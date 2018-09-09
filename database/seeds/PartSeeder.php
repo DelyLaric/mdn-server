@@ -14,7 +14,7 @@ class PartSeeder extends Seeder
         foreach ($plants as $plant) {
 
             $data = [];
-            for ($i = 0, $l = random_int(4, 6) * 1000; $i < $l; $i++) {
+            for ($i = 0, $l = random_int(4, 6) * 100; $i < $l; $i++) {
                 $item = [];
                 $item['categroy_id'] = $plant->id;
                 foreach ($columns as $column) {
