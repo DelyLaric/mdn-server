@@ -10,19 +10,13 @@ class DataController extends Controller
   public function create()
   {
     $table = $this->get('table', 'required');
-    $group = $this->get('group', 'required');
-    $groupId = $this->get('groupId', 'required');
-    $primary = $this->get('primary', 'required');
+    $categroyId = $this->get('categroyId', 'required');
 
-    $id = DB::table($table)->insertGetId([
-      $group => $groupId
-    ]);
+    $id = DB::table($table)->insertGetId(['categroy_id' => $categroyId]);
 
-    // area_id 用于确定 location 所拥有的 columns
     return (array) Data::search([
       'id' => $id,
-      'table' => $table,
-      'primary' => $primary
+      'table' => $table
     ])[0];
   }
 
@@ -30,12 +24,12 @@ class DataController extends Controller
   {
     $params = $this->via([
       'table' => 'required',
-      'primary' => 'required',
-      'group' => 'required',
-      'groupId' => 'required',
+      'categroyId' => 'required',
       'format' => 'required',
       'query' => 'nullable'
     ]);
+
+    $params['categroy_id'] = $params['categroyId'];
 
     return Data::search($params);
   }
@@ -82,6 +76,6 @@ class DataController extends Controller
 
     DB::table($table)->whereIn('id', $ids)->delete();
 
-    return success_response('区域数据已删除');
+    return success_response('数据已更新');
   }
 }

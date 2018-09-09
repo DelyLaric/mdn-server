@@ -20,9 +20,6 @@ class Plants extends BaseRepository
     }
 
     $datas = $query->get();
-    foreach ($datas as &$data) {
-      $data->part_columns = array_decode($data->part_columns);
-    }
 
     return $datas;
   }

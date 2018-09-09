@@ -9,7 +9,7 @@ class AreaSeeder extends Seeder
     public function run()
     {
         $plantIds = Facades\Plants::search()->pluck('id');
-        $columns = Facades\Columns::search();
+        $columns = Facades\Columns::search(['table' => 'locations']);
 
         foreach ($plantIds as $plantId) {
             for ($i = 0; $i < random_int(6, 15); $i++) {

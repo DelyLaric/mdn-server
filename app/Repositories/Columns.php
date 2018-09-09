@@ -43,6 +43,17 @@ class Columns extends BaseRepository
     return $this->search(['id' => $id])[0];
   }
 
+  public function createFixed($table, $name, $text, $comment = null)
+  {
+    DB::table('columns')->insert([
+      'table' => $table,
+      'name' => $name,
+      'text' => $text,
+      'comment' => $comment,
+      'is_fixed' => true
+    ]);
+  }
+
   public function destroy($id, $pivot = null, $pivotKey = null)
   {
     $column = $this->search(['id' => $id])[0];

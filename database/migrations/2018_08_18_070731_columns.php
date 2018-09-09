@@ -16,6 +16,8 @@ class Columns extends Migration
             $table->string('text');
             $table->string('comment')->nullable();
             $table->boolean('is_fixed')->default(false);
+            $table->boolean('is_unique')->default(false);
+
             $table->unique(['table', 'name']);
         });
     }

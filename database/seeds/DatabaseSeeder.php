@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ColumnSeeder::class);
         $this->call(AreaSeeder::class);
         $this->call(LocationSeeder::class);
+        $this->call(PartSeeder::class);
         $this->call(ProjectSeeder::class);
         $this->call(TaskSeeder::class);
         $this->call(TaskAreaSeeder::class);

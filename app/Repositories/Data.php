@@ -10,9 +10,7 @@ class Data extends BaseRepository
    *
    * object like params
    * @param string table
-   * @param string primary
-   * @param string group
-   * @param string groupId
+   * @param string categroyId
    * @param string query
    *
    */
@@ -20,20 +18,19 @@ class Data extends BaseRepository
   public function search($params = [])
   {
     $table = $params['table'];
-    $primary = $params['primary'];
 
     $columns = Facades\Columns::search(['table' => $table]);
-    $selects = [$primary];
+    $selects = [];
     foreach ($columns as $column) {
       $selects[] = $column->name;
     }
 
     $query = DB::table($table);
-    $query->orderByRaw("$primary is null desc, id desc");
+    $query->orderByRaw("data_id is null desc, id desc");
     $query->select(array_merge(['id'], $selects));
 
-    if (isset($params['group'])) {
-      $query->where($params['group'], $params['groupId']);
+    if (isset($params['categroy_id'])) {
+      $query->where('categroy_id', $params['categroy_id']);
     }
 
     if (isset($params['id'])) {
@@ -49,11 +46,11 @@ class Data extends BaseRepository
       });
     }
 
-    if (!isset($params['format'])) $params['format'] = 'object';
+    if (!isset($params['format'])) $params['format'] = 'normal';
     switch ($params['format']) {
       case 'array':
         return Serialize\Locations::getArray($query->get());
-      case 'object':
+      case 'normal':
         return $query->get();
       case 'paginate':
         return Serialize\Pagination::getResource($query->paginate(50));

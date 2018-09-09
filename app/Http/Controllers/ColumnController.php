@@ -41,7 +41,7 @@ class ColumnController extends Controller
 
     Columns::destroy($params['id'], $params['pivot'], $params['pivotKey']);
 
-    return success_response('流程字段已删除');
+    return success_response('属性已删除');
   }
 
   public function updateName()
@@ -53,7 +53,7 @@ class ColumnController extends Controller
 
     Columns::updateName($params['id'], $params['name']);
 
-    return success_response('流程属性字段已修改');
+    return success_response('属性字段名已修改');
   }
 
   public function updateText()
@@ -67,7 +67,7 @@ class ColumnController extends Controller
       'text' => $params['text']
     ]);
 
-    return success_response('流程属性显示名已修改');
+    return success_response('属性名已修改');
   }
 
   public function updateComment()
@@ -81,6 +81,6 @@ class ColumnController extends Controller
       'comment' => $params['comment']
     ]);
 
-    return success_response('流程属性备注已修改');
+    return success_response('属性备注已修改');
   }
 }
