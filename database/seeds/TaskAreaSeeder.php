@@ -22,7 +22,7 @@ class TaskAreaSeeder extends Seeder
             $params[] = [
               'task_id' => $taskId,
               'area_id' => $areaId,
-              'location_id' => random_int(1, 39)
+              'data_id' => random_int(1, 39)
             ];
           }
         }

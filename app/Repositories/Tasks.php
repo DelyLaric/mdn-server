@@ -24,12 +24,13 @@ class Tasks extends BaseRepository
       (
         select coalesce(jsonb_object_agg(areas.area_id, areas.*), '{}') from (
           select
-            coalesce(row_to_json(l.*), '{}') as location, a.area_id, a.location_id
+            a.area_id, a.data_id,
+            coalesce(row_to_json(l.*), '{}') as location
           from task_areas as a
           left join locations as l on
-            l.location_id = a.location_id and l.area_id = a.area_id
+            l.data_id = a.data_id and l.categroy_id = a.area_id
           where
-            a.task_id = tasks.id
+            tasks.id = a.task_id
         ) as areas
       ) as areas
     "));

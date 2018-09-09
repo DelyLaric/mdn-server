@@ -28,7 +28,7 @@ class TaskController extends Controller
 
     DB::table('tasks')->where('id', $params['id'])->delete();
 
-    return 200;
+    return success_response('任务已删除');
   }
 
   public function search()
@@ -86,14 +86,12 @@ class TaskController extends Controller
 
   public function addArea()
   {
-    $params = $this->via([
-      'taskId' => 'required',
-      'areaId' => 'required'
-    ]);
+    $taskId = $this->get('taskId', 'required');
+    $areaId = $this->get('areaId', 'required');
 
     DB::table('task_areas')->insert([
-      'task_id' => $params['taskId'],
-      'area_id' => $params['areaId']
+      'task_id' => $taskId,
+      'area_id' => $areaId
     ]);
 
     return 'ok';
@@ -101,14 +99,12 @@ class TaskController extends Controller
 
   public function removeArea()
   {
-    $params = $this->via([
-      'taskId' => 'required',
-      'areaId' => 'required'
-    ]);
+    $taskId = $this->get('taskId', 'required');
+    $areaId = $this->get('areaId', 'required');
 
     DB::table('task_areas')
-      ->where('task_id', $params['taskId'])
-      ->where('area_id', $params['areaId'])
+      ->where('task_id', $taskId)
+      ->where('area_id', $areaId)
       ->delete();
 
     return 'ok';
@@ -116,20 +112,19 @@ class TaskController extends Controller
 
   public function updateAreaData()
   {
-    $params = $this->via([
-      'taskId' => 'required',
-      'areaId' => 'required',
-      'locationId' => 'nullable'
-    ]);
+    $taskId = $this->get('taskId', 'required');
+    $areaId = $this->get('areaId', 'required');
+    $dataId = $this->get('dataId', 'nullable');
+    if ($dataId === '') $dataId = null;
 
     DB::table('task_areas')
-      ->where('task_id', $params['taskId'])
-      ->where('area_id', $params['areaId'])
-      ->update(['location_id' => $params['locationId']]);
+      ->where('task_id', $taskId)
+      ->where('area_id', $areaId)
+      ->update(['data_id' => $dataId]);
 
     return (array) DB::table('locations')->where([
-      'area_id' => $params['areaId'],
-      'location_id' => $params['locationId']
+      'categroy_id' => $areaId,
+      'data_id' => $dataId
     ])->get()->first();
   }
 }

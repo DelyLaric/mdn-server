@@ -11,7 +11,7 @@ class TaskAreas extends Migration
         Schema::create('task_areas', function ($table) {
             $table->integer('task_id');
             $table->integer('area_id');
-            $table->string('location_id')->nullable();
+            $table->string('data_id')->nullable();
 
             $table->unique(['task_id', 'area_id']);
         });
