@@ -111,7 +111,7 @@ class TaskController extends Controller
   public function updatePart()
   {
     $taskId = $this->get('taskId', 'required');
-    $partId = $this->get('dataId', 'nullable');
+    $partId = $this->get('partId', 'nullable');
 
     DB::table('tasks')->where('id', $taskId)->update(['part_id' => $partId]);
     $projectId = Tasks::getPlantIdByTaskId($taskId);
