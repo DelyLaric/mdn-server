@@ -7,7 +7,6 @@ Route::post('plants/create', 'PlantController@create');
 Route::post('plants/destroy', 'PlantController@destroy');
 Route::post('plants/name/update', 'PlantController@updateName');
 Route::post('plants/comment/update', 'PlantController@updateComment');
-Route::post('plants/parts/columns/update', 'PlantController@updatePartColumns');
 
 Route::post('columns/search', 'ColumnController@search');
 Route::post('columns/create', 'ColumnController@create');
