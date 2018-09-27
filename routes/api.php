@@ -48,3 +48,4 @@ Route::post('tasks/part/update', 'TaskController@updatePart');
 Route::post('tasks/areas/add', 'TaskController@addArea');
 Route::post('tasks/areas/remove', 'TaskController@removeArea');
 Route::post('tasks/areas/location/update', 'TaskController@updateAreaData');
+Route::post('tasks/area/search', 'TaskController@searchArea');

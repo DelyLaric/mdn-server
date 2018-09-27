@@ -15,7 +15,7 @@ class TaskController extends Controller
       'project_id' => $projectId
     ]);
 
-    return (array) Tasks::search(['id' => $id, 'project_id' => $projectId])[0];
+    return (array) DB::table('tasks')->where('id', $id)->get()[0];
   }
 
   public function destroy()
@@ -27,17 +27,6 @@ class TaskController extends Controller
     DB::table('tasks')->where('id', $params['id'])->delete();
 
     return success_response('任务已删除');
-  }
-
-  public function search()
-  {
-    $params = $this->via([
-      'projectId' => 'nullable'
-    ]);
-
-    $params['project_id'] = $params['projectId'];
-
-    return Tasks::search($params);
   }
 
   public function updateComment()
@@ -138,5 +127,71 @@ class TaskController extends Controller
       'categroy_id' => $areaId,
       'data_id' => $dataId
     ])->get()->first();
+  }
+
+  public function search()
+  {
+    $projectId = $this->get('projectId', 'nullable');
+
+    $query = DB::table('tasks')
+               ->select('tasks.*')
+               ->orderBy('id', 'desc');
+
+    if ($projectId !== null) {
+      $query->where('project_id', $projectId);
+    }
+
+    return $query->paginate(50);
+  }
+
+  public function searchArea()
+  {
+    $search = $this->get('query', 'nullable');
+    $areaId = $this->get('areaId', 'required');
+    $taskId = $this->get('taskId', 'nullable');
+    $projectId = $this->get('projectId', 'nullable');
+
+    $query = DB::table('tasks')
+      ->addSelect('tasks.*')
+      ->addSelect(DB::raw('to_json(task_areas.*) as "taskArea"'))
+      ->addSelect(DB::raw("coalesce(to_json(locations.*), '{}') as location"))
+      ->leftJoin('projects', 'tasks.project_id', 'projects.id')
+      ->leftJoin('task_areas', function ($join) use ($areaId) {
+        $join->on('task_areas.task_id', 'tasks.id')
+             ->where('task_areas.area_id', $areaId);
+      })
+      ->leftJoin('locations', function ($join) use ($areaId) {
+        $join->on('locations.data_id', '=', 'task_areas.data_id')
+             ->where('locations.categroy_id', $areaId);
+      })
+      ->whereNotNull('task_areas.task_id');
+
+    if ($projectId !== null) {
+      $query->where('tasks.project_id', $projectId);
+    }
+
+    if ($search !== null) {
+      $query->where(function ($query) use ($search) {
+        foreach ([
+          'tasks.part_id', 'tasks.comment', 'locations.data_id',
+          DB::raw("to_char(tasks.project_id, '')")
+        ] as $field) {
+          $query->orWhere($field, 'like', "%$search%");
+        }
+      });
+    }
+
+    if ($taskId !== null) {
+      $query->where('tasks.id', $taskId);
+    }
+
+    $result = $query->paginate(50)->toArray();
+
+    foreach ($result['data'] as $item) {
+      $item->location = json_decode($item->location);
+      $item->taskArea = json_decode($item->taskArea);
+    }
+
+    return $result;
   }
 }
