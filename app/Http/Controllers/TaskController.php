@@ -150,9 +150,11 @@ class TaskController extends Controller
     $areaId = $this->get('areaId', 'required');
     $taskId = $this->get('taskId', 'nullable');
     $projectId = $this->get('projectId', 'nullable');
+    $taskStatus = $this->get('taskStatus', 'nullable');
 
     $query = DB::table('tasks')
       ->addSelect('tasks.*')
+      ->addSelect(DB::raw('to_json(projects.*) as "project"'))
       ->addSelect(DB::raw('to_json(task_areas.*) as "taskArea"'))
       ->addSelect(DB::raw("coalesce(to_json(locations.*), '{}') as location"))
       ->leftJoin('projects', 'tasks.project_id', 'projects.id')
@@ -185,9 +187,14 @@ class TaskController extends Controller
       $query->where('tasks.id', $taskId);
     }
 
+    if ($taskStatus !== null) {
+      $query->where('tasks.status', $taskStatus);
+    }
+
     $result = $query->paginate(50)->toArray();
 
     foreach ($result['data'] as $item) {
+      $item->project = json_decode($item->project);
       $item->location = json_decode($item->location);
       $item->taskArea = json_decode($item->taskArea);
     }
