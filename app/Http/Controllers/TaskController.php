@@ -159,6 +159,7 @@ class TaskController extends Controller
     $taskStatus = $this->get('taskStatus', 'nullable');
 
     $query = DB::table('tasks')
+      ->orderBy('tasks.id', 'desc')
       ->addSelect('tasks.*')
       ->addSelect(DB::raw('to_json(projects.*) as "project"'))
       ->addSelect(DB::raw('to_json(task_areas.*) as "taskArea"'))
@@ -181,7 +182,10 @@ class TaskController extends Controller
     if ($search !== null) {
       $query->where(function ($query) use ($search) {
         foreach ([
-          'tasks.part_id', 'tasks.comment', 'locations.data_id',
+          'tasks.part_id',
+          'tasks.line_id',
+          'tasks.comment',
+          'locations.data_id',
           DB::raw("to_char(tasks.project_id, '')")
         ] as $field) {
           $query->orWhere($field, 'like', "%$search%");
