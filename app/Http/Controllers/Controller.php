@@ -45,10 +45,8 @@ class Controller extends BaseController
         $params = request([$name]);
 
         $this->viaParams($params, [$name => $rule]);
-        $param = $params[$name];
-        if ($param === null) {
-            $param = $default;
-        }
+
+        $param = isset($params[$name]) ? $params[$name] : $default;
 
         return $param;
     }
