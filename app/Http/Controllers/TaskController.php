@@ -99,16 +99,22 @@ class TaskController extends Controller
 
   public function updatePart()
   {
-    $taskId = $this->get('taskId', 'required');
+    $taskId = $this->get('id', 'required');
     $partId = $this->get('partId', 'nullable');
 
     DB::table('tasks')->where('id', $taskId)->update(['part_id' => $partId]);
-    $projectId = Tasks::getPlantIdByTaskId($taskId);
 
-    return (array) DB::table('parts')->where([
-      'data_id' => $partId,
-      'categroy_id' => $projectId
-    ])->get()->first();
+    return 'ok';
+  }
+
+  public function updateLine()
+  {
+    $taskId = $this->get('id', 'required');
+    $lineId = $this->get('lineId', 'nullable');
+
+    DB::table('tasks')->where('id', $taskId)->update(['line_id' => $lineId]);
+
+    return 'ok';
   }
 
   public function updateAreaData()
