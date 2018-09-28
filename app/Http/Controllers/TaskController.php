@@ -150,6 +150,53 @@ class TaskController extends Controller
     return $query->paginate(50);
   }
 
+  public function searchAreas()
+  {
+    $search = $this->get('query', 'nullable');
+    $plantId = $this->get('plantId', 'required');
+    $taskStatus = $this->get('taskStatus', 'nullable');
+
+    $query = DB::table('tasks')
+      ->orderBy('tasks.id', 'desc')
+      ->addSelect('tasks.*')
+      ->addSelect(DB::raw('to_json(projects.*) as project'))
+      ->addSelect(DB::raw("
+        (
+          select coalesce(jsonb_object_agg(areas.area_id, areas.*), '{}') from (
+            select * from task_areas where tasks.id = task_areas.task_id
+          ) as areas
+        ) as areas
+      "))
+      ->leftJoin('projects', 'projects.id', 'tasks.project_id')
+      ->where('projects.plant_id', $plantId);
+
+    if ($search !== null) {
+      $query->where(function ($query) use ($search) {
+        foreach ([
+          'tasks.part_id',
+          'tasks.line_id',
+          'tasks.comment',
+          DB::raw("to_char(tasks.project_id, '')")
+        ] as $field) {
+          $query->orWhere($field, 'like', "%$search%");
+        }
+      });
+    }
+
+    if ($taskStatus !== null) {
+      $query->where('tasks.status', $taskStatus);
+    }
+
+    $result = $query->paginate(50)->toArray();
+
+    foreach ($result['data'] as $item) {
+      $item->project = json_decode($item->project);
+      $item->areas = json_decode($item->areas);
+    }
+
+    return $result;
+  }
+
   public function searchArea()
   {
     $search = $this->get('query', 'nullable');
