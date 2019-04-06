@@ -1,5 +1,9 @@
 <?php
 
+Route::post('auth/logout', 'AuthController@logout');
+Route::post('auth/check', 'AuthController@test');
+Route::post('auth/refresh', 'AuthController@refresh');
+
 Route::post('common/validate', 'ValidationController@validation');
 
 Route::post('plants/search', 'PlantController@search');

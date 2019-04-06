@@ -42,6 +42,10 @@ class Controller extends BaseController
 
     public function get($name, $rule, $default = null)
     {
+        if (is_array($name)) {
+            return $this->via($name);
+        }
+
         $params = request([$name]);
 
         $this->viaParams($params, [$name => $rule]);

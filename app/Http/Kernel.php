@@ -41,7 +41,6 @@ class Kernel extends HttpKernel
 
         'api' => [
             'bindings',
-            'auth'
         ]
     ];
 
